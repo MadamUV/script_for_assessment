@@ -9,6 +9,7 @@ public class rigidBodyScript : MonoBehaviour {
     private Mesh mesh;
     private Ray[] rays;
     private Vector3 myDirection;
+    private Ray myRay;
 
     // Use this for initialization
     void Start()
@@ -22,13 +23,29 @@ public class rigidBodyScript : MonoBehaviour {
         //to track objects behind it after collsion
         myDirection = planeVelocity.normalized * -1.0f;
         //Check to see if this velocity goes in opposite direction with Vector3
-        rigidThing.velocity = myDirection;
+        //rigidThing.velocity = myDirection;
         //It does!
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
-
+        //didn't work yet but didn't throw any errors either
+        Vector3[] myVertices = mesh.vertices;
+        for(int i=0; i<myVertices.Length; i++)
+        {
+            Vector3 origin = myVertices[i];
+            myRay = new Ray(origin, myDirection);
+            rays[i] = myRay;
+        }
+        for(int i=0; i<rays.Length; i++)
+        {
+            RaycastHit hit;
+            if(Physics.Raycast(rays[i], out hit, 500))
+            {
+                myVertices[i] = hit.point;
+                mesh.vertices = myVertices;
+            }
+        }
     }
 
     // Update is called once per frame
