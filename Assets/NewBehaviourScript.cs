@@ -1,46 +1,39 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour {
+public class rigidBodyScript : MonoBehaviour {
 
-    public GameObject particlePlane;
-    public Vector3[] intersection;
-    public ParticleSystem particular;
-    //public ParticleSystem[] particulars;
-    public Mesh planeMesh;
-    public List<ParticleCollisionEvent> myCollisions;
-    public Ray[] rays;
+    private GameObject plane;
+    private Rigidbody rigidThing;
+    private Mesh mesh;
+    private Ray[] rays;
+    private Vector3 myDirection;
 
-	// Use this for initialization
-	void Start () {
-        particlePlane = GameObject.Find("Plane");
-        particular = particlePlane.GetComponent<ParticleSystem>();
-        
-        planeMesh = particlePlane.GetComponent<MeshFilter>().mesh;
-	}
-    private void OnParticleCollision(GameObject other)
+    // Use this for initialization
+    void Start()
     {
-        int howManyCollisions = particular.GetCollisionEvents(other, myCollisions);
-        Rigidbody otherBody = other.GetComponent<Rigidbody>();
-        for(int i = 0; i < howManyCollisions; i++)
-        {
-            if(otherBody)
-            {
-                Vector3 position = myCollisions[i].intersection;
-                for(int j = 0; j < planeMesh.vertices.Length; j++)
-                {
-                    if (planeMesh.vertices[j] == position)
-                    {
+        plane = gameObject;
+        rigidThing = plane.GetComponent<Rigidbody>();
+        mesh = plane.GetComponent<MeshFilter>().mesh;
+        rigidThing.velocity = new Vector3(1, 0, 0);
+        Vector3 planeVelocity = rigidThing.velocity;
+        //direction equals planeMesh velocity normalized then multiplied by -1.0f,
+        //to track objects behind it after collsion
+        myDirection = planeVelocity.normalized * -1.0f;
+        //Check to see if this velocity goes in opposite direction with Vector3
+        rigidThing.velocity = myDirection;
+        //It does!
+    }
 
-                    }
-                }
-            }
-        }
+    private void OnCollisionEnter(Collision collision)
+    {
+
     }
 
     // Update is called once per frame
-    void Update () {
-		
-	}
+    void Update()
+    {
+
+    }
 }
