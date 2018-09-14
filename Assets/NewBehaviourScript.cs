@@ -46,14 +46,13 @@ public class rigidBodyScript : MonoBehaviour {
             myRay = new Ray(origin, myDirection);
             rays[i] = myRay;
         }
-        Debug.Log(rays[0]);
         for (int i = 0; i < rays.Length; i++)
         {
             RaycastHit hit;
             if (Physics.Raycast(rays[i], out hit, 500))
             {
                 myVertices[i] = hit.point;
-
+                Debug.Log(hit.point);
                 mesh.vertices = myVertices;
             }
         }
