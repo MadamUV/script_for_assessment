@@ -25,32 +25,36 @@ public class rigidBodyScript : MonoBehaviour {
         //Check to see if this velocity goes in opposite direction with Vector3
         //rigidThing.velocity = myDirection;
         //It does!
+        int numVertices = mesh.vertices.Length;
+        //init rays array
+        rays = new Ray[numVertices];
     }
 
     private void OnCollisionStay(Collision collision)
     {
         //didn't work yet but didn't throw any errors either
-        Vector3[] myVertices = mesh.vertices;
-        for(int i=0; i<myVertices.Length; i++)
-        {
-            Vector3 origin = myVertices[i];
-            myRay = new Ray(origin, myDirection);
-            rays[i] = myRay;
-        }
-        for(int i=0; i<rays.Length; i++)
-        {
-            RaycastHit hit;
-            if(Physics.Raycast(rays[i], out hit, 500))
-            {
-                myVertices[i] = hit.point;
-                mesh.vertices = myVertices;
-            }
-        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        Vector3[] myVertices = mesh.vertices;
+        for (int i = 0; i < myVertices.Length; i++)
+        {
+            Vector3 origin = myVertices[i];
+            Debug.Log(myVertices[i]);
+            myRay = new Ray(origin, myDirection);
+            rays[i] = myRay;
+        }
+        for (int i = 0; i < rays.Length; i++)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(rays[i], out hit, 500))
+            {
+                myVertices[i] = hit.point;
+                mesh.vertices = myVertices;
+            }
+        }
     }
 }
