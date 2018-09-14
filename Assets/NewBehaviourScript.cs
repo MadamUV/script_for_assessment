@@ -40,10 +40,11 @@ public class rigidBodyScript : MonoBehaviour {
     void Update()
     {
         Vector3[] myVertices = mesh.vertices;
+        //test log vertices length
+        Debug.Log(mesh.vertices.Length);
         for (int i = 0; i < myVertices.Length; i++)
         {
             Vector3 origin = myVertices[i];
-            Debug.Log(myVertices[i]);
             myRay = new Ray(origin, myDirection);
             rays[i] = myRay;
         }
